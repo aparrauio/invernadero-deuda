@@ -1,0 +1,75 @@
+const express = require("express");
+const Planta = require("../models/planta");
+const Riego = require("../models/riego");
+const { validarPlanta, esIdValido } = require("../dominio/validaciones");
+
+const router = express.Router();
+
+// Mismo 400 para la planta y para su historial.
+const ID_NO_VALIDO = {
+  error: "Datos no válidos",
+  detalles: [
+    { campo: "id", mensaje: "La planta no tiene un identificador válido" },
+  ],
+};
+
+router.post("/", async (req, res) => {
+  // Solo se toman los campos que el cuidador puede fijar: createdAt lo pone el sistema.
+  const {
+    nombre,
+    especie,
+    ubicacion,
+    intervaloRiegoDias,
+    enReposo,
+    cuidadosEspeciales,
+  } = req.body ?? {};
+  const detalles = validarPlanta({
+    nombre,
+    especie,
+    ubicacion,
+    intervaloRiegoDias,
+  });
+  if (detalles.length > 0) {
+    return res.status(400).json({ error: "Datos no válidos", detalles });
+  }
+  const planta = await Planta.create({
+    nombre,
+    especie,
+    ubicacion,
+    intervaloRiegoDias,
+    enReposo,
+    cuidadosEspeciales,
+  });
+  res.status(201).json(planta);
+});
+
+router.get("/", async (req, res) => {
+  const plantas = await Planta.find().sort({ createdAt: 1 });
+  res.json(plantas);
+});
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  if (!esIdValido(id)) {
+    return res.status(400).json(ID_NO_VALIDO);
+  }
+  const planta = await Planta.findById(id);
+  if (!planta) {
+    return res.status(404).json({ error: "Planta no encontrada" });
+  }
+  res.json(planta);
+});
+
+router.get("/:id/riegos", async (req, res) => {
+  const { id } = req.params;
+  if (!esIdValido(id)) {
+    return res.status(400).json(ID_NO_VALIDO);
+  }
+  if (!(await Planta.exists({ _id: id }))) {
+    return res.status(404).json({ error: "Planta no encontrada" });
+  }
+  const riegos = await Riego.find({ planta: id }).sort({ fecha: -1 });
+  res.json(riegos);
+});
+
+module.exports = router;
