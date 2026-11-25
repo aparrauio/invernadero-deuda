@@ -1,20 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { registrarRiego, repartirErrores } from "../api.js";
+import { leerNumero } from "../formato.js";
 import Campo from "./Campo.jsx";
 import Mensaje from "./Mensaje.jsx";
 
 // Panel de riego rápido (spec 07): 500 ml sugeridos, fecha de hoy y sin cuidador.
 const CANTIDAD_SUGERIDA = "500";
 const SIN_ERRORES = { porCampo: {}, generales: [] };
-
-// "2,5" se envía como 2.5 para que la API responda con su mensaje de «entero».
-// Un texto que no es un número se envía tal cual y la API lo rechaza.
-function leerCantidad(texto) {
-  const limpio = texto.trim();
-  if (limpio === "") return undefined;
-  const numero = Number(limpio.replace(",", "."));
-  return Number.isFinite(numero) ? numero : limpio;
-}
 
 export default function RiegoRapido({ planta, alGuardar, alCancelar }) {
   const [cantidad, setCantidad] = useState(CANTIDAD_SUGERIDA);
@@ -39,7 +31,7 @@ export default function RiegoRapido({ planta, alGuardar, alCancelar }) {
     try {
       const riego = await registrarRiego({
         planta: planta._id,
-        cantidadMl: leerCantidad(cantidad),
+        cantidadMl: leerNumero(cantidad),
       });
       alGuardar(riego);
     } catch (error) {

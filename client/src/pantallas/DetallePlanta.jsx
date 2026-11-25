@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { listarRiegos, registrarRiego, repartirErrores } from "../api.js";
-import { fechaCorta, hoyIso } from "../formato.js";
+import { fechaCorta, hoyIso, leerNumero } from "../formato.js";
 import Campo from "../componentes/Campo.jsx";
 import ListaVacia from "../componentes/ListaVacia.jsx";
 import Mensaje from "../componentes/Mensaje.jsx";
@@ -42,10 +42,9 @@ export default function DetallePlanta({ planta, alVolver }) {
     setExito("");
     setErrores({ porCampo: {}, generales: [] });
     try {
-      const cantidad = datos.cantidadMl.trim();
       const riego = await registrarRiego({
         planta: planta._id,
-        cantidadMl: cantidad === "" ? undefined : Number(cantidad),
+        cantidadMl: leerNumero(datos.cantidadMl),
         fecha: datos.fecha || undefined,
         cuidador: datos.cuidador.trim() || undefined,
       });
@@ -162,10 +161,8 @@ export default function DetallePlanta({ planta, alVolver }) {
             id="cantidadMl"
             etiqueta="Cantidad (ml)"
             ayuda="Medio litro son 500 ml."
-            type="number"
+            type="text"
             inputMode="numeric"
-            min="1"
-            step="1"
             value={datos.cantidadMl}
             onChange={cambiar}
             error={errores.porCampo.cantidadMl}
