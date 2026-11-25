@@ -68,3 +68,4 @@
 - **`test/dominio/validaciones.test.js` no pasa `prettier --check`** desde la spec 08. No se toca aquí porque la spec prohíbe modificar los tests existentes.
 - **Capturas de la spec 07:** con el nuevo patrón de `.gitignore`, `docs/specs/07-riego-rapido/capturas/` aparece como carpeta sin seguimiento. No se añade aquí (D-19).
 - **Números de línea de D-14** en `docs/deuda-tecnica.md`: ya no apuntan a las tarjetas que citan.
+- **El hook de revisión no se disparó (D-20):** al cambiar `.gitignore`, `docs/specs/07-riego-rapido/capturas/` quedó sin seguimiento, y `revision-adversarial.js:57-61` lo tomó como trabajo pendiente y salió sin avisar. Se desbloqueó excluyendo esa carpeta solo en la copia local (`.git/info/exclude`), y el fallo queda anotado como D-20 en `docs/deuda-tecnica.md`.
