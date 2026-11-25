@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { listarPlantas, registrarPlanta, repartirErrores } from "../api.js";
+import { leerNumero } from "../formato.js";
 import Campo from "../componentes/Campo.jsx";
 import ListaVacia from "../componentes/ListaVacia.jsx";
 import Mensaje from "../componentes/Mensaje.jsx";
@@ -72,10 +73,9 @@ export default function Plantas({ alAbrir }) {
     setExito("");
     setErrores({ porCampo: {}, generales: [] });
     try {
-      const intervalo = datos.intervaloRiegoDias.trim();
       const planta = await registrarPlanta({
         ...datos,
-        intervaloRiegoDias: intervalo === "" ? undefined : Number(intervalo),
+        intervaloRiegoDias: leerNumero(datos.intervaloRiegoDias),
       });
       setPlantas([...plantas, planta]);
       setEstado("listo");
@@ -235,10 +235,8 @@ export default function Plantas({ alAbrir }) {
             id="intervaloRiegoDias"
             etiqueta="Riego cada (días)"
             ayuda="Cada cuántos días hay que regarla. Mínimo 1."
-            type="number"
+            type="text"
             inputMode="numeric"
-            min="1"
-            step="1"
             value={datos.intervaloRiegoDias}
             onChange={cambiar}
             error={errores.porCampo.intervaloRiegoDias}

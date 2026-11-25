@@ -15,6 +15,7 @@ Sigue estos pasos en orden. No toques código.
    - Si el MCP no permite crear listas, detente y dile al usuario exactamente qué listas debe crear a mano en Trello y en qué orden. Después podrá ejecutar `/tablero` otra vez.
 4. Para cada tarjeta del archivo:
    - Si ya hay una tarjeta con el mismo título en el tablero, no la dupliques: déjala donde está.
+   - Si esa tarjeta está en una lista distinta de la que dice el archivo, tampoco la muevas, pero anótala con las dos listas (la de Trello y la del archivo) para la tabla final.
    - Si no existe, créala en su lista con la descripción tal cual, sin resumirla ni cambiarla.
    - Respeta el orden del archivo: en «Por hacer», la primera tarjeta es la de mayor prioridad.
-5. Termina con una tabla: lista, tarjetas creadas y tarjetas que ya existían. Incluye el enlace al tablero.
+5. Termina con una tabla: lista, tarjetas creadas, tarjetas que ya existían y «Lista distinta» (cada tarjeta que está en otra lista, con la de Trello y la del archivo). Incluye el enlace al tablero.

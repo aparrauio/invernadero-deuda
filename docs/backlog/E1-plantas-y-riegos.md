@@ -18,7 +18,7 @@ Estas decisiones resuelven casos borde de HU-1.1 y HU-1.2. Ya están incorporada
 
 ## Historias del MVP
 
-**Estado de entrega (2026-11-04):** HU-1.1, HU-1.2, HU-1.4 y HU-1.5 entregadas en backend y frontend (specs 01 y 02, [auditoría del frontend](../AUDITORIA-frontend.md)). La deuda técnica sigue pendiente.
+**Estado de entrega (2026-11-04):** HU-1.1, HU-1.2, HU-1.4 y HU-1.5 entregadas en backend y frontend (specs 01 y 02, [auditoría del frontend](../AUDITORIA-frontend.md)). HU-1.8 entregada en la spec 07. La deuda técnica sigue pendiente.
 
 ### HU-1.1 · Registrar una planta
 Como cuidador, quiero registrar una planta con su nombre, especie, ubicación e intervalo de riego en días, para que el invernadero sepa qué planta es, dónde está y cada cuánto hay que regarla.
@@ -224,10 +224,10 @@ Los criterios de aceptación todavía no cubren estas situaciones. Hay que decid
   - [x] Se rechaza un intervalo que no sea un número entero o que sea menor que 1 (regla 6.1).
   - [x] Cada planta guarda su fecha de registro (regla 6.2).
   - [x] Los errores indican qué dato falla, y si faltan varios datos se informa de todos.
-  - [ ] Las reglas que no dependen de la base de datos están en `src/dominio/` como funciones puras y tienen tests unitarios.
+  - [x] Las reglas que no dependen de la base de datos están en `src/dominio/` como funciones puras y tienen tests unitarios.
   - [x] `npm test` pasa.
 - **Dependencias:** T-01.
-- **Estado:** pendiente. Las validaciones de la planta están en el modelo de Mongoose, no en `src/dominio/` como funciones puras.
+- **Estado:** hecho (spec 04).
 
 #### T-03 · Registrar una planta por la API
 - **Historia:** HU-1.1. **Tipo:** Endpoint/API.
@@ -264,10 +264,10 @@ Los criterios de aceptación todavía no cubren estas situaciones. Hay que decid
   - [ ] Se aceptan cantidades con decimales y se rechaza una cantidad de 0 o negativa (regla 6.10).
   - [x] Se acepta una fecha pasada desde el día de registro de la planta, y se rechaza una fecha futura o anterior a ese día (regla 6.4, D5).
   - [x] Las fechas se comparan como días de calendario y se ignora la hora (regla 6.5), así que un riego el mismo día del registro de la planta se acepta.
-  - [ ] Las reglas de fechas y cantidad están en `src/dominio/` como funciones puras y tienen tests unitarios, incluidos los casos alrededor de la medianoche.
+  - [x] Las reglas de fechas y cantidad están en `src/dominio/` como funciones puras y tienen tests unitarios, incluidos los casos alrededor de la medianoche.
   - [x] `npm test` pasa.
 - **Dependencias:** T-01, T-02.
-- **Estado:** pendiente. La cantidad se guarda en ml enteros (spec X1), no en litros con decimales, y su validación está en el modelo, no en `src/dominio/`.
+- **Estado:** pendiente solo por la unidad: la DoD pide litros con decimales y D6 fijó ml enteros.
 
 #### T-06 · Registrar un riego por la API
 - **Historia:** HU-1.2. **Tipo:** Endpoint/API.
@@ -340,7 +340,7 @@ Como cuidador, quiero corregir o borrar un riego mal registrado, para que un err
 ### HU-1.8 · Registrar un riego rápido desde la lista
 Como cuidador, quiero registrar un riego desde la lista de plantas sin abrir su detalle, para anotarlo en segundos mientras recorro las mesas.
 
-- **Estado:** pendiente de spec. No se implementa hasta que exista en `docs/specs/`.
+- **Estado:** implementada (spec 07).
 - **Alcance:** §4.2, como atajo de la interfaz sobre HU-1.2. No cambia el backend: usa el endpoint existente `POST /api/riegos` (spec 01, X7).
 - **Reglas:** D1, D2, D6 y 6.4 (las mismas de HU-1.2).
 
@@ -399,10 +399,8 @@ Como cuidador, quiero registrar un riego desde la lista de plantas sin abrir su 
 
 ## Deuda técnica
 
-- T-02 y T-05: las validaciones de planta y riego están en los modelos de Mongoose, no en `src/dominio/` como funciones puras.
 - T-04 y T-07: los tests no comprueban que un rechazo deja sin crear la planta o el riego.
 - T-07: CA-1.2.5 (planta inexistente) solo se verificó con curl; no tiene test automático.
 - T-01, T-04 y T-07: quitar de la DoD la base de datos aislada, que ya no aplica (spec 01, X9).
-- AGENTS.md dice que los riegos van bajo `/api/plantas/:id/riegos`, pero el registro es `POST /api/riegos` (spec 01, X7).
 - X2, X3 y X4 de la spec 01 (cuidador, reposo y cuidados especiales) siguen sin confirmar con el cliente.
 - Casos borde abiertos de HU-1.1 y HU-1.2 (nombres repetidos, máximos, dos riegos el mismo día).
