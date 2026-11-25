@@ -3,7 +3,7 @@
 Archivo de carga para la skill `/tablero`. Cada tarjeta empieza con `## ` y una línea `Lista:`. En «Por hacer», el orden es la prioridad.
 
 ## Spec 09 · Saldar la deuda de prioridad «pagar ya»
-Lista: Por hacer
+Lista: Hecho
 
 - **Historia:** ninguna (solo deuda técnica). **Deuda:** D-5, D-9, D-10, D-11, D-14, D-15 y D-17 (`docs/deuda-tecnica.md`).
 - **Objetivo:** que los formularios conviertan los números con una sola función, que las capturas de las specs lleguen a git, que el harness deje de contradecirse y vigile `main`, `.env` y las diferencias del tablero, y que el backlog y AGENTS.md vuelvan a decir la verdad sobre el código.
