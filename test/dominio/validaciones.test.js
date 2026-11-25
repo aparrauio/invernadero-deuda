@@ -268,3 +268,46 @@ describe("esIdValido", () => {
     }
   });
 });
+
+describe("validarRiego y esIdValido (spec 08)", () => {
+  const AHORA = new Date(2026, 10, 18, 12, 0);
+  const VALORES = [
+    "665f1c2a9b1e8a0012345678",
+    "665F1C2A9B1E8A0012345678",
+    "123",
+    "665f1c2a9b1e8a001234567z",
+    " 665f1c2a9b1e8a0012345678",
+    123,
+    { $gt: "" },
+    undefined,
+    null,
+    "",
+    "   ",
+  ];
+
+  const detallesDePlanta = (planta) =>
+    validarRiego({ planta, cantidadMl: 500 }, AHORA).filter(
+      (d) => d.campo === "planta",
+    );
+
+  test("CA-08.2: rechaza la planta exactamente cuando esIdValido la rechaza", () => {
+    for (const planta of VALORES) {
+      assert.equal(
+        detallesDePlanta(planta).length > 0,
+        !esIdValido(planta),
+        `${JSON.stringify(planta)}`,
+      );
+    }
+  });
+
+  test("CA-08.3: los mensajes de la planta no cambian", () => {
+    assert.deepEqual(mensajes(detallesDePlanta("123")), [
+      "La planta no tiene un identificador válido",
+    ]);
+    for (const planta of ["", "   "]) {
+      assert.deepEqual(mensajes(detallesDePlanta(planta)), [
+        "La planta es obligatoria",
+      ]);
+    }
+  });
+});
