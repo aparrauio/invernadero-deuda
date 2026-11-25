@@ -3,7 +3,7 @@
 Archivo de carga para la skill `/tablero`. Cada tarjeta empieza con `## ` y una línea `Lista:`. En «Por hacer», el orden es la prioridad.
 
 ## Spec 08 · Unificar la validación de identificadores
-Lista: Por hacer
+Lista: Hecho
 
 - **Historia:** HU-1.2 · Registrar un riego. **Deuda:** D-1 (`docs/deuda-tecnica.md`).
 - **Objetivo:** el identificador de la planta de un riego se comprueba con `esIdValido`, y en `src/` queda una sola expresión regular para los identificadores.
